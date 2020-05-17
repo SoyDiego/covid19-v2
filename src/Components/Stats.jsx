@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import moment from '../../node_modules/moment/dist/moment'
 
-const Stats = ({ url }) => {
-	const [stats, setStats] = useState([]);
+const Stats = ({ url, flagWorld}) => {
+	const [stats, setStats] = useState(null);
 
 	const getData = async () => {
 		const data = await fetch(url);
@@ -11,12 +12,13 @@ const Stats = ({ url }) => {
 
 	useEffect(() => {
 		getData();
-	}, []);
+	},);
 
 	return (
+		stats &&(
 		<>
 			<div className="col-xl-12 text-center mb-3">
-				<img className="img-fluid" src={stats.countryInfo.flag} alt="" width="150" />
+				<img className="img-fluid" src={flagWorld || stats.countryInfo.flag} alt="" width="150" />
 			</div>
 			<div className="col-xl-12 col-md-6 text-center mb-5">
 				<div id="divWorld" className="card mb-2">
@@ -67,7 +69,7 @@ const Stats = ({ url }) => {
 						<div className="col-xl-12 text-center">
 							<p className="card-text">
 								<small id="updateW" className="text-muted">
-									Last updated: {stats.updated}
+									Last updated: {moment(stats.updated).fromNow()}
 								</small>
 							</p>
 						</div>
@@ -75,7 +77,7 @@ const Stats = ({ url }) => {
 				</div>
 			</div>
 		</>
-	);
+	));
 };
 
 export default Stats;
